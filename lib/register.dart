@@ -10,7 +10,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
@@ -147,7 +148,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                                  _isConfirmPasswordVisible =
+                                      !_isConfirmPasswordVisible;
                                 });
                               },
                             ),
@@ -169,7 +171,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           child: ElevatedButton(
                             onPressed: _register,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(255, 136, 111, 12),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 136, 111, 12),
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),

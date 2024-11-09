@@ -58,7 +58,8 @@ class SmsCenterScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color.fromARGB(255, 136, 111, 12).withOpacity(0.1),
+                      color: const Color.fromARGB(255, 136, 111, 12)
+                          .withOpacity(0.1),
                     ),
                     child: Image.asset(
                       'assets/logo.webp',

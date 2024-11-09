@@ -220,7 +220,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 title: Text(
                                   product['name'],
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 subtitle: Text(
                                   'Rp ${product['price']}',
@@ -316,7 +317,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       child: ElevatedButton(
                         onPressed: _confirmPayment,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 136, 111, 12),
+                          backgroundColor:
+                              const Color.fromARGB(255, 136, 111, 12),
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

@@ -129,7 +129,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
                               onPressed: _cancelUpdate,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.grey,
-                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -145,8 +146,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
                             child: ElevatedButton(
                               onPressed: _updateUserData,
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromARGB(255, 136, 111, 12),
-                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                backgroundColor:
+                                    const Color.fromARGB(255, 136, 111, 12),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

@@ -134,7 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           onPressed: _login,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 136, 111, 12),
+                            backgroundColor:
+                                const Color.fromARGB(255, 136, 111, 12),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -160,7 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           );
                         },
                         style: TextButton.styleFrom(
-                          foregroundColor: const Color.fromARGB(255, 136, 111, 12),
+                          foregroundColor:
+                              const Color.fromARGB(255, 136, 111, 12),
                         ),
                         child: const Text(
                           'Belum punya akun? Register',
