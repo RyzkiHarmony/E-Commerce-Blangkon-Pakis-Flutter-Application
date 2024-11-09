@@ -122,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void onWAPressed() async {
     final Uri url = Uri.parse(
-      'https://wa.me/6285700704667?text=Halo%20Blangkis,%20saya%20ingin%20memesan%20blangkon');
+        'https://wa.me/6285700704667?text=Halo%20Blangkis,%20saya%20ingin%20memesan%20blangkon');
     if (await canLaunchUrl(url)) {
       await launchUrl(url, mode: LaunchMode.externalApplication);
     } else {
@@ -158,7 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             letterSpacing: 1,
           ),
         ),
-        backgroundColor: Color(0xFF8B4513), // Warm brown color
+        backgroundColor: Color(0xFF8B4513),
         elevation: 0,
         actions: [
           Theme(
@@ -174,13 +174,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: PopupMenuButton<String>(
               icon: const Icon(Icons.more_vert, color: Colors.white),
               onSelected: (value) {
-                // ... existing onSelected logic
+                if (value == 'Call') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CallCenterScreen(),
+                    ),
+                  );
+                } else if (value == 'SMS') {
+                  onWAPressed();
+                } else if (value == 'Map') {
+                  _launchMap();
+                } else if (value == 'Update') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UpdateScreen(),
+                    ),
+                  );
+                } else if (value == 'Logout') {
+                  _logout();
+                }
               },
               itemBuilder: (context) => [
                 _buildPopupMenuItem('Call Center', 'Call', Icons.call),
                 _buildPopupMenuItem('SMS Center', 'SMS', Icons.message),
                 _buildPopupMenuItem('Lokasi/Maps', 'Map', Icons.location_on),
-                _buildPopupMenuItem('Update User & Password', 'Update', Icons.update),
+                _buildPopupMenuItem(
+                    'Update User & Password', 'Update', Icons.update),
                 _buildPopupMenuItem('Logout', 'Logout', Icons.logout),
               ],
             ),
@@ -207,7 +228,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   childAspectRatio: 0.75,
                 ),
                 itemCount: _products.length,
-                itemBuilder: (context, index) => _buildProductCard(_products[index]),
+                itemBuilder: (context, index) =>
+                    _buildProductCard(_products[index]),
               ),
             ),
             _buildTotalBar(),
@@ -217,7 +239,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  PopupMenuItem<String> _buildPopupMenuItem(String text, String value, IconData icon) {
+  PopupMenuItem<String> _buildPopupMenuItem(
+      String text, String value, IconData icon) {
     return PopupMenuItem<String>(
       value: value,
       child: Row(
@@ -241,7 +264,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(15)),
               child: Stack(
                 children: [
                   Image.asset(
@@ -257,7 +281,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       backgroundColor: Color(0xFF8B4513),
                       radius: 18,
                       child: IconButton(
-                        icon: const Icon(Icons.add_shopping_cart, size: 18, color: Colors.white),
+                        icon: const Icon(Icons.add_shopping_cart,
+                            size: 18, color: Colors.white),
                         onPressed: () => _addToCart(product),
                       ),
                     ),
@@ -341,7 +366,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onPressed: _showPaymentForm,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF8B4513),
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
