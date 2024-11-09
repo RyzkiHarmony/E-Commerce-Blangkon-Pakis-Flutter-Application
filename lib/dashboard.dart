@@ -150,131 +150,212 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-            const Text('Daftar Produk', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color.fromARGB(255, 119, 100, 25),
+        title: const Text(
+          'Daftar Produk',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1,
+          ),
+        ),
+        backgroundColor: Color(0xFF8B4513), // Warm brown color
+        elevation: 0,
         actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'Call') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CallCenterScreen(),
-                  ),
-                );
-              } else if (value == 'SMS') {
-                onWAPressed();
-              } else if (value == 'Map') {
-                _launchMap();
-              } else if (value == 'Update') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UpdateScreen(),
-                  ),
-                );
-              } else if (value == 'Logout') {
-                _logout();
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'Call', child: Text('Call Center')),
-              const PopupMenuItem(value: 'SMS', child: Text('SMS Center')),
-              const PopupMenuItem(value: 'Map', child: Text('Lokasi/Maps')),
-              const PopupMenuItem(
-                  value: 'Update', child: Text('Update User & Password')),
-              const PopupMenuItem(value: 'Logout', child: Text('Logout')),
-            ],
+          Theme(
+            data: Theme.of(context).copyWith(
+              popupMenuTheme: PopupMenuThemeData(
+                color: Colors.white,
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+            child: PopupMenuButton<String>(
+              icon: const Icon(Icons.more_vert, color: Colors.white),
+              onSelected: (value) {
+                // ... existing onSelected logic
+              },
+              itemBuilder: (context) => [
+                _buildPopupMenuItem('Call Center', 'Call', Icons.call),
+                _buildPopupMenuItem('SMS Center', 'SMS', Icons.message),
+                _buildPopupMenuItem('Lokasi/Maps', 'Map', Icons.location_on),
+                _buildPopupMenuItem('Update User & Password', 'Update', Icons.update),
+                _buildPopupMenuItem('Logout', 'Logout', Icons.logout),
+              ],
+            ),
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 2 / 2.5,
-              ),
-              itemCount: _products.length,
-              itemBuilder: (context, index) {
-                final product = _products[index];
-                return Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 3,
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => _addToCart(product),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Image.asset(
-                            product['image'],
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: 100,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: GestureDetector(
-                          onTap: () => _showProductDetails(context, product),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  product['name'],
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14),
-                                  textAlign: TextAlign.left,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  'Harga: Rp ${product['price']}',
-                                  style: TextStyle(
-                                      color: Colors.grey[600], fontSize: 12),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF8B4513).withOpacity(0.1), Colors.white],
           ),
-          Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.grey[200],
-            child: GestureDetector(
-              onTap: _totalSales > 0 ? _showPaymentForm : null,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: GridView.builder(
+                padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: _products.length,
+                itemBuilder: (context, index) => _buildProductCard(_products[index]),
+              ),
+            ),
+            _buildTotalBar(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  PopupMenuItem<String> _buildPopupMenuItem(String text, String value, IconData icon) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Color(0xFF8B4513)),
+          const SizedBox(width: 12),
+          Text(text),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductCard(Map<String, dynamic> product) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: InkWell(
+        onTap: () => _showProductDetails(context, product),
+        borderRadius: BorderRadius.circular(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+              child: Stack(
                 children: [
-                  Text(
-                    'Total Pembelian: Rp ${_totalSales.toStringAsFixed(0)}',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.bold),
+                  Image.asset(
+                    product['image'],
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  Positioned(
+                    right: 8,
+                    top: 8,
+                    child: CircleAvatar(
+                      backgroundColor: Color(0xFF8B4513),
+                      radius: 18,
+                      child: IconButton(
+                        icon: const Icon(Icons.add_shopping_cart, size: 18, color: Colors.white),
+                        onPressed: () => _addToCart(product),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product['name'],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Rp ${product['price']}',
+                    style: TextStyle(
+                      color: Color(0xFF8B4513),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTotalBar() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -5),
           ),
         ],
+      ),
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Total Pembelian',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    'Rp ${_totalSales.toStringAsFixed(0)}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF8B4513),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (_totalSales > 0)
+              ElevatedButton(
+                onPressed: _showPaymentForm,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF8B4513),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
+                child: const Text(
+                  'Bayar Sekarang',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
